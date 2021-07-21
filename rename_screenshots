@@ -12,20 +12,20 @@ mapfile -t files < <(find . -type f -printf "%T+ %p\n"|sort|awk '{$1=""; print $
 
 for file in "${files[@]}"
 do
-        # Append leading zeros where required
+	# Append leading zeros where required
 
-        if [ "$count" -lt "10" ]
-        then
-                new_count=00"${count}"
-                count="$new_count"
-        elif [ "$count" -lt "100" ]
-        then
-                new_count=0"${count}"
-                count="$new_count"
-        fi
+	if [ "$count" -lt "10" ]
+	then
+		new_count=00"${count}"
+		count="$new_count"
+	elif [ "$count" -lt "100" ]
+	then
+		new_count=0"${count}"
+		count="$new_count"
+	fi
 
-        # Rename each screenshot
+	# Rename each screenshot
 
-        mv "$file" Screenshot_"${count}".png
-        count=$(echo "$count" + 1|bc -l)
+	mv "$file" Screenshot_"${count}".png
+	count=$(echo "$count" + 1|bc -l)
 done
