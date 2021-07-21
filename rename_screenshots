@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# Renames screenshots in order by date as Screenshot_001 to Screenshot_999
+
+count=1
+
+# Get a list of the screenshots
+
+mapfile -t files < <(find . -type f -printf "%T+ %p\n"|sort|awk '{$1=""; print $0}'|cut -c 2-)
+
+# Iterate through the screenshots
+
+for file in "${files[@]}"
+do
+        # Append leading zeros where required
+
+        if [ "$count" -lt "10" ]
+        then
+                new_count=00"${count}"
+                count="$new_count"
+        elif [ "$count" -lt "100" ]
+        then
+                new_count=0"${count}"
+                count="$new_count"
+        fi
+
+        # Rename each screenshot
+
+        mv "$file" Screenshot_"${count}".png
+        count=$(echo "$count" + 1|bc -l)
+done
